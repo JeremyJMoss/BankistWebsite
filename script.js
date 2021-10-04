@@ -15,6 +15,10 @@ const tabsContent = document.querySelectorAll(".operations__content");
 const nav = document.querySelector(".nav");
 const allSections = document.querySelectorAll(".section");
 const imageTargets = document.querySelectorAll("img[data-src]");
+const slides = document.querySelectorAll(".slide");
+const slider = document.querySelector(".slider");
+const btnLeft = document.querySelector(".slider__btn--left");
+const btnRight = document.querySelector(".slider__btn--right");
 
 const openModal = function (e) {
   e.preventDefault();
@@ -140,3 +144,25 @@ const imageObserver = new IntersectionObserver(lazyLoading, {
 });
 
 imageTargets.forEach((img) => imageObserver.observe(img));
+
+//slider animation
+let curSlide = 0;
+
+slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
+
+//Next slide
+btnRight.addEventListener("click", function () {
+  curSlide++;
+  if (curSlide === 3) curSlide = 0;
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
+  );
+});
+
+btnLeft.addEventListener("click", function () {
+  curSlide--;
+  if (curSlide === -1) curSlide = 2;
+  slides.forEach(
+    (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
+  );
+});
