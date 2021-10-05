@@ -19,6 +19,7 @@ const slides = document.querySelectorAll(".slide");
 const slider = document.querySelector(".slider");
 const btnLeft = document.querySelector(".slider__btn--left");
 const btnRight = document.querySelector(".slider__btn--right");
+const dotContainer = document.querySelector(".dots");
 
 const openModal = function (e) {
   e.preventDefault();
@@ -145,23 +146,31 @@ const imageObserver = new IntersectionObserver(lazyLoading, {
 
 imageTargets.forEach((img) => imageObserver.observe(img));
 
+const createDots = function () {
+  slides.forEach((_, i) => {
+    dotContainer.insertAdjacentHTML(
+      "beforeend",
+      `<button class="dots__dot" data-slide ="${i}"></button>`
+    );
+  });
+};
+
 //slider animation
 let curSlide = 0;
+let maxSlide = slides.length - 1;
 
 slides.forEach((s, i) => (s.style.transform = `translateX(${100 * i}%)`));
 
 //Next slide
 btnRight.addEventListener("click", function () {
-  curSlide++;
-  if (curSlide === 3) curSlide = 0;
+  curSlide === maxSlide ? (curSlide = 0) : curSlide++;
   slides.forEach(
     (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
   );
 });
 
 btnLeft.addEventListener("click", function () {
-  curSlide--;
-  if (curSlide === -1) curSlide = 2;
+  curSlide === 0 ? (curSlide = maxSlide) : curSlide--;
   slides.forEach(
     (s, i) => (s.style.transform = `translateX(${100 * (i - curSlide)}%)`)
   );
